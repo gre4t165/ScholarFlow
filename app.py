@@ -2,6 +2,55 @@
 ScholarFlow - AI Systematic Literature Review (SLR) Workflow
 Multi-step application for processing large volumes of academic papers.
 """
+import streamlit as st
+
+# --- BAGIAN 1: FUNGSI LOGIN ---
+def check_password():
+    """Mengecek apakah password yang diinput sesuai dengan secrets."""
+    # Pastikan key 'password_akses' sama dengan yang ada di Secrets Streamlit Cloud
+    if st.session_state["password_input"] == st.secrets["password_akses"]:
+        st.session_state["password_correct"] = True
+        del st.session_state["password_input"]  # Hapus password dari memori
+    else:
+        st.session_state["password_correct"] = False
+
+# Inisialisasi status login jika belum ada
+if "password_correct" not in st.session_state:
+    st.session_state["password_correct"] = False
+
+# --- BAGIAN 2: LOGIKA TAMPILAN ---
+if not st.session_state["password_correct"]:
+    # Jika belum login, tampilkan form input
+    st.title("🔒 Mohon Login")
+    st.write("Aplikasi ini dilindungi kata sandi.")
+    
+    st.text_input(
+        "Masukkan Password", 
+        type="password", 
+        on_change=check_password, 
+        key="password_input"
+    )
+    
+    if "password_correct" in st.session_state and not st.session_state["password_correct"]:
+        st.error("❌ Password salah, silakan coba lagi.")
+
+else:
+    # --- BAGIAN 3: APLIKASI UTAMA ANDA DI SINI ---
+    # Taruh semua kode aplikasi Anda di bawah 'else' ini.
+    # PENTING: Semua baris di bawah ini harus menjorok ke dalam (indent).
+    
+    st.title("✅ Dashboard Utama")
+    st.success("Login Berhasil!")
+    
+    # Contoh konten aplikasi (Hapus ini dan ganti dengan kode Anda)
+    st.write("Selamat datang! Ini adalah konten rahasia.")
+    st.bar_chart([10, 20, 30, 40])
+    
+    # Tombol Logout
+    if st.button("Logout"):
+        st.session_state["password_correct"] = False
+        st.rerun()
+
 
 import json
 import os
@@ -894,3 +943,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
