@@ -1,37 +1,47 @@
+import streamlit as st
+import os
+
+# --- FUNGSI LOGIN (Letakkan di Baris Paling Atas) ---
+def check_password():
+    """Mengecek password dengan penanganan error jika secrets belum disetting."""
+    
+    # 1. Cek dulu apakah user sudah login sebelumnya
+    if st.session_state.get("password_correct", False):
+        return  # Jika sudah login, langsung keluar dari fungsi & lanjut ke aplikasi utama
+
+    # 2. Tampilan Form Login
+    st.title("🔒 ScholarFlow - Login Area")
+    password = st.text_input("Masukkan Kode Akses", type="password")
+
+    if st.button("Masuk"):
+        # 3. Cek apakah Secrets sudah disetting di Dashboard?
+        if "password_akses" in st.secrets:
+            # Jika ada, ambil passwordnya
+            secret_pass = st.secrets["password_akses"]
+            
+            if password == secret_pass:
+                st.session_state["password_correct"] = True
+                st.rerun()
+            else:
+                st.error("❌ Password salah.")
+        else:
+            # Jika lupa setting secrets, beri pesan error yang jelas (bukan crash)
+            st.warning("⚠️ Error Konfigurasi: Password belum disetting di Streamlit Cloud Secrets.")
+            st.info("Buka Dashboard Streamlit > Settings > Secrets, lalu tambahkan: password_akses = '...'" )
+
+    # 4. Berhenti di sini jika belum login
+    st.stop()
+
+# Jalankan fungsi ini
+check_password()
+
+# --- TEMPEL KODE ASLI SCHOLARFLOW DI BAWAH SINI ---
+# (Pastikan rata kiri, jangan di-indent)
+
 """
 ScholarFlow - AI Systematic Literature Review (SLR) Workflow
 Multi-step application for processing large volumes of academic papers.
 """
-import streamlit as st
-
-# --- BAGIAN 1: CEK LOGIN ---
-# Jika belum login, tampilkan input password
-if not st.session_state.get("password_correct", False):
-    pwd = st.text_input("Masukkan Password", type="password")
-    
-    # Cek saat tombol ditekan
-    if st.button("Masuk"):
-        if pwd == st.secrets["password_akses"]:  # Cek ke secrets
-            st.session_state["password_correct"] = True
-            st.rerun()  # Refresh halaman
-        else:
-            st.error("Password salah!")
-    
-    st.stop()  # ⛔ INI RAHASIANYA: Kode di bawah ini TIDAK akan jalan kalau belum login
-
-# --- BAGIAN 2: APLIKASI UTAMA ---
-# Tulis kode aplikasi Anda seperti biasa di sini (tidak perlu masuk ke dalam else)
-
-st.title("✅ Dashboard Utama")
-st.write("Selamat! Anda berhasil masuk.")
-st.write("Ini adalah data rahasia...")
-
-# Tombol Logout (Simpel)
-if st.button("Logout"):
-    st.session_state["password_correct"] = False
-    st.rerun()
-
-
 import json
 import os
 import re
@@ -923,5 +933,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
