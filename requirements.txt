@@ -1,0 +1,29 @@
+# ScholarFlow - AI Scientific Paper Writer (Multi-Provider RAG)
+# Python 3.10+ recommended
+
+# Frontend
+streamlit>=1.39.0
+
+# AI Engine - LlamaIndex Core
+llama-index>=0.10.0
+
+# LLM Providers
+llama-index-llms-openai>=0.2.0
+llama-index-llms-google-genai>=0.2.0
+llama-index-llms-anthropic>=0.2.0
+llama-index-llms-ollama>=0.2.0
+
+# Embedding Providers
+llama-index-embeddings-openai>=0.2.0
+llama-index-embeddings-google-genai>=0.2.0
+llama-index-embeddings-huggingface>=0.2.0
+llama-index-embeddings-ollama>=0.2.0
+
+# PDF Processing
+pypdf>=5.0.0
+
+# Data
+pandas>=2.0.0
+
+# Utilities
+python-dotenv>=1.0.0
